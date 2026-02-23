@@ -195,11 +195,15 @@ Add-Type -AssemblyName WindowsBase
                  FontWeight="Bold" Foreground="#8b5cf6"/>
           </TextBlock>
           <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
-                      VerticalAlignment="Center">
-            <Button x:Name="BtnMin" Content="&#x2212;" Style="{StaticResource ChromeBtn}"
-                    Margin="0,0,4,0"/>
-            <Button x:Name="BtnClose" Content="&#x2715;" Style="{StaticResource ChromeBtn}"/>
-          </StackPanel>
+            VerticalAlignment="Center">
+    <Button x:Name="BtnMin" Content="&#x2212;" Style="{StaticResource ChromeBtn}"
+            Margin="0,0,4,0"/>
+
+    <Button x:Name="BtnMax" Content="&#x25A1;" Style="{StaticResource ChromeBtn}"
+            Margin="0,0,4,0"/>
+
+    <Button x:Name="BtnClose" Content="&#x2715;" Style="{StaticResource ChromeBtn}"/>
+</StackPanel>
         </Grid>
       </Border>
       <Border Grid.Row="0" Height="1" VerticalAlignment="Bottom"
