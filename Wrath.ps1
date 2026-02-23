@@ -775,7 +775,17 @@ function Set-SectionChecked($sectionKey, $value, [switch]$RecOnly) {
 
 (gn "TitleBar").Add_MouseLeftButtonDown({ $Window.DragMove() })
 (gn "BtnMin").Add_Click({ $Window.WindowState = "Minimized" })
+
+(gn "BtnMax").Add_Click({
+    if ($Window.WindowState -eq "Normal") {
+        $Window.WindowState = "Maximized"
+    } else {
+        $Window.WindowState = "Normal"
+    }
+})
+
 (gn "BtnClose").Add_Click({ $Window.Close() })
+
 
 # ════════════════════════════════════════════════════════
 #  EVENTS — HOME
