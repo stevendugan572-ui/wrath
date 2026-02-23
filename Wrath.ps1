@@ -21,35 +21,103 @@ Add-Type -AssemblyName WindowsBase
 
   <Window.Resources>
 
-    <!-- Purple filled pill -->
-    <Style x:Key="PillBtn" TargetType="Button">
-      <Setter Property="Background" Value="#8b5cf6"/>
-      <Setter Property="Foreground" Value="White"/>
-      <Setter Property="FontFamily" Value="Consolas"/>
-      <Setter Property="FontSize" Value="12"/>
-      <Setter Property="FontWeight" Value="Medium"/>
-      <Setter Property="Padding" Value="26,11"/>
-      <Setter Property="BorderThickness" Value="0"/>
-      <Setter Property="Cursor" Value="Hand"/>
-      <Setter Property="Template">
-        <Setter.Value>
-          <ControlTemplate TargetType="Button">
-            <Border x:Name="Bd" Background="{TemplateBinding Background}"
-                    CornerRadius="999" Padding="{TemplateBinding Padding}">
-              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            </Border>
-            <ControlTemplate.Triggers>
-              <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="Bd" Property="Background" Value="#a78bfa"/>
-              </Trigger>
-              <Trigger Property="IsPressed" Value="True">
-                <Setter TargetName="Bd" Property="Background" Value="#7c3aed"/>
-              </Trigger>
-            </ControlTemplate.Triggers>
-          </ControlTemplate>
-        </Setter.Value>
-      </Setter>
-    </Style>
+   <!-- Purple filled pill -->
+<Style x:Key="PillBtn" TargetType="Button">
+  <Setter Property="Background" Value="#9b6bff"/>
+  <Setter Property="Foreground" Value="White"/>
+  <Setter Property="FontFamily" Value="Segoe UI Semibold"/>
+  <Setter Property="FontSize" Value="14"/>
+  <Setter Property="Padding" Value="32,14"/>
+  <Setter Property="BorderThickness" Value="0"/>
+  <Setter Property="Cursor" Value="Hand"/>
+  <Setter Property="Template">
+    <Setter.Value>
+      <ControlTemplate TargetType="Button">
+        <Border x:Name="Bd"
+                Background="{TemplateBinding Background}"
+                CornerRadius="24"
+                Padding="{TemplateBinding Padding}">
+          <ContentPresenter HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
+        </Border>
+        <ControlTemplate.Triggers>
+          <Trigger Property="IsMouseOver" Value="True">
+            <Setter TargetName="Bd" Property="Background" Value="#b48cff"/>
+          </Trigger>
+          <Trigger Property="IsPressed" Value="True">
+            <Setter TargetName="Bd" Property="Background" Value="#7f3df5"/>
+          </Trigger>
+        </ControlTemplate.Triggers>
+      </ControlTemplate>
+    </Setter.Value>
+  </Setter>
+</Style>
+
+<!-- Ghost outlined pill -->
+<Style x:Key="GhostBtn" TargetType="Button">
+  <Setter Property="Background" Value="Transparent"/>
+  <Setter Property="Foreground" Value="#bbbbbb"/>
+  <Setter Property="FontFamily" Value="Segoe UI"/>
+  <Setter Property="FontSize" Value="13"/>
+  <Setter Property="Padding" Value="28,12"/>
+  <Setter Property="BorderThickness" Value="0"/>
+  <Setter Property="Cursor" Value="Hand"/>
+  <Setter Property="Template">
+    <Setter.Value>
+      <ControlTemplate TargetType="Button">
+        <Border x:Name="Bd"
+                Background="Transparent"
+                BorderBrush="#333333"
+                BorderThickness="1.4"
+                CornerRadius="24"
+                Padding="{TemplateBinding Padding}">
+          <ContentPresenter HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
+        </Border>
+        <ControlTemplate.Triggers>
+          <Trigger Property="IsMouseOver" Value="True">
+            <Setter TargetName="Bd" Property="BorderBrush" Value="#9b6bff"/>
+            <Setter Property="Foreground" Value="#d9c6ff"/>
+          </Trigger>
+        </ControlTemplate.Triggers>
+      </ControlTemplate>
+    </Setter.Value>
+  </Setter>
+</Style>
+
+<!-- Outline pill (secondary actions) -->
+<Style x:Key="OutlineBtn" TargetType="Button">
+  <Setter Property="Background" Value="Transparent"/>
+  <Setter Property="Foreground" Value="#aaaaaa"/>
+  <Setter Property="FontFamily" Value="Segoe UI"/>
+  <Setter Property="FontSize" Value="13"/>
+  <Setter Property="Padding" Value="26,12"/>
+  <Setter Property="BorderThickness" Value="0"/>
+  <Setter Property="Cursor" Value="Hand"/>
+  <Setter Property="Template">
+    <Setter.Value>
+      <ControlTemplate TargetType="Button">
+        <Border x:Name="Bd"
+                Background="Transparent"
+                BorderBrush="#2a2a2a"
+                BorderThickness="1.4"
+                CornerRadius="24"
+                Padding="{TemplateBinding Padding}">
+          <ContentPresenter HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
+        </Border>
+        <ControlTemplate.Triggers>
+          <Trigger Property="IsMouseOver" Value="True">
+            <Setter TargetName="Bd" Property="Background" Value="#120a1f"/>
+            <Setter TargetName="Bd" Property="BorderBrush" Value="#9b6bff"/>
+            <Setter Property="Foreground" Value="#c7a8ff"/>
+          </Trigger>
+        </ControlTemplate.Triggers>
+      </ControlTemplate>
+    </Setter.Value>
+  </Setter>
+</Style>
+
 
     <!-- Ghost outlined pill -->
     <Style x:Key="GhostBtn" TargetType="Button">
