@@ -19,7 +19,7 @@ Add-Type -AssemblyName WindowsBase
     WindowStyle="None" AllowsTransparency="True"
     Background="Transparent" ResizeMode="CanResizeWithGrip">
 
-  <Window.Resources>
+<Window.Resources>
 
    <!-- Purple filled pill -->
 <Style x:Key="PillBtn" TargetType="Button">
@@ -118,117 +118,60 @@ Add-Type -AssemblyName WindowsBase
   </Setter>
 </Style>
 
+<!-- Window chrome buttons (min/close) -->
+<Style x:Key="ChromeBtn" TargetType="Button">
+  <Setter Property="Background" Value="Transparent"/>
+  <Setter Property="Foreground" Value="#444444"/>
+  <Setter Property="FontFamily" Value="Consolas"/>
+  <Setter Property="FontSize" Value="14"/>
+  <Setter Property="Width" Value="32"/>
+  <Setter Property="Height" Value="32"/>
+  <Setter Property="BorderThickness" Value="0"/>
+  <Setter Property="Cursor" Value="Hand"/>
+  <Setter Property="Template">
+    <Setter.Value>
+      <ControlTemplate TargetType="Button">
+        <Border x:Name="Bd" Background="Transparent" CornerRadius="999">
+          <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Border>
+        <ControlTemplate.Triggers>
+          <Trigger Property="IsMouseOver" Value="True">
+            <Setter TargetName="Bd" Property="Background" Value="#1a1a1a"/>
+            <Setter Property="Foreground" Value="#bbbbbb"/>
+          </Trigger>
+        </ControlTemplate.Triggers>
+      </ControlTemplate>
+    </Setter.Value>
+  </Setter>
+</Style>
 
-    <!-- Ghost outlined pill -->
-    <Style x:Key="GhostBtn" TargetType="Button">
-      <Setter Property="Background" Value="Transparent"/>
-      <Setter Property="Foreground" Value="#666666"/>
-      <Setter Property="FontFamily" Value="Consolas"/>
-      <Setter Property="FontSize" Value="11"/>
-      <Setter Property="Padding" Value="22,9"/>
-      <Setter Property="BorderThickness" Value="0"/>
-      <Setter Property="Cursor" Value="Hand"/>
-      <Setter Property="Template">
-        <Setter.Value>
-          <ControlTemplate TargetType="Button">
-            <Border x:Name="Bd" Background="Transparent"
-                    BorderBrush="#2a2a2a" BorderThickness="1"
-                    CornerRadius="999" Padding="{TemplateBinding Padding}">
-              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            </Border>
-            <ControlTemplate.Triggers>
-              <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="Bd" Property="BorderBrush" Value="#555555"/>
-                <Setter Property="Foreground" Value="#cccccc"/>
-              </Trigger>
-            </ControlTemplate.Triggers>
-          </ControlTemplate>
-        </Setter.Value>
-      </Setter>
-    </Style>
+<!-- Scrollbar -->
+<Style TargetType="ScrollBar">
+  <Setter Property="Width" Value="5"/>
+  <Setter Property="Background" Value="Transparent"/>
+  <Setter Property="Template">
+    <Setter.Value>
+      <ControlTemplate TargetType="ScrollBar">
+        <Grid>
+          <Track x:Name="PART_Track" IsDirectionReversed="True">
+            <Track.Thumb>
+              <Thumb>
+                <Thumb.Template>
+                  <ControlTemplate TargetType="Thumb">
+                    <Border Background="#221540" CornerRadius="3"/>
+                  </ControlTemplate>
+                </Thumb.Template>
+              </Thumb>
+            </Track.Thumb>
+          </Track>
+        </Grid>
+      </ControlTemplate>
+    </Setter.Value>
+  </Setter>
+</Style>
 
-    <!-- Outline pill (secondary actions) -->
-    <Style x:Key="OutlineBtn" TargetType="Button">
-      <Setter Property="Background" Value="Transparent"/>
-      <Setter Property="Foreground" Value="#555555"/>
-      <Setter Property="FontFamily" Value="Consolas"/>
-      <Setter Property="FontSize" Value="11"/>
-      <Setter Property="Padding" Value="18,8"/>
-      <Setter Property="BorderThickness" Value="0"/>
-      <Setter Property="Cursor" Value="Hand"/>
-      <Setter Property="Template">
-        <Setter.Value>
-          <ControlTemplate TargetType="Button">
-            <Border x:Name="Bd" Background="Transparent"
-                    BorderBrush="#222222" BorderThickness="1"
-                    CornerRadius="999" Padding="{TemplateBinding Padding}">
-              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            </Border>
-            <ControlTemplate.Triggers>
-              <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="Bd" Property="Background" Value="#120a1f"/>
-                <Setter TargetName="Bd" Property="BorderBrush" Value="#8b5cf6"/>
-                <Setter Property="Foreground" Value="#a78bfa"/>
-              </Trigger>
-            </ControlTemplate.Triggers>
-          </ControlTemplate>
-        </Setter.Value>
-      </Setter>
-    </Style>
+</Window.Resources>
 
-    <!-- Window chrome buttons (min/close) -->
-    <Style x:Key="ChromeBtn" TargetType="Button">
-      <Setter Property="Background" Value="Transparent"/>
-      <Setter Property="Foreground" Value="#444444"/>
-      <Setter Property="FontFamily" Value="Consolas"/>
-      <Setter Property="FontSize" Value="14"/>
-      <Setter Property="Width" Value="32"/>
-      <Setter Property="Height" Value="32"/>
-      <Setter Property="BorderThickness" Value="0"/>
-      <Setter Property="Cursor" Value="Hand"/>
-      <Setter Property="Template">
-        <Setter.Value>
-          <ControlTemplate TargetType="Button">
-            <Border x:Name="Bd" Background="Transparent" CornerRadius="999">
-              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            </Border>
-            <ControlTemplate.Triggers>
-              <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="Bd" Property="Background" Value="#1a1a1a"/>
-                <Setter Property="Foreground" Value="#bbbbbb"/>
-              </Trigger>
-            </ControlTemplate.Triggers>
-          </ControlTemplate>
-        </Setter.Value>
-      </Setter>
-    </Style>
-
-    <!-- Scrollbar -->
-    <Style TargetType="ScrollBar">
-      <Setter Property="Width" Value="5"/>
-      <Setter Property="Background" Value="Transparent"/>
-      <Setter Property="Template">
-        <Setter.Value>
-          <ControlTemplate TargetType="ScrollBar">
-            <Grid>
-              <Track x:Name="PART_Track" IsDirectionReversed="True">
-                <Track.Thumb>
-                  <Thumb>
-                    <Thumb.Template>
-                      <ControlTemplate TargetType="Thumb">
-                        <Border Background="#221540" CornerRadius="3"/>
-                      </ControlTemplate>
-                    </Thumb.Template>
-                  </Thumb>
-                </Track.Thumb>
-              </Track>
-            </Grid>
-          </ControlTemplate>
-        </Setter.Value>
-      </Setter>
-    </Style>
-
-  </Window.Resources>
 
   <!-- Root border gives the window shape + border -->
   <Border Background="#080808" CornerRadius="14"
