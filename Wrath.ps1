@@ -896,38 +896,140 @@ $PgProGames   = gn "PgProGames";   $Script:Pages += $PgProGames
 $PgProPlayers = gn "PgProPlayers"; $Script:Pages += $PgProPlayers
 $PgSettings   = gn "PgSettings";   $Script:Pages += $PgSettings
 
-$ApplyBar  = gn "ApplyBar"
-$ApplyLabel= gn "ApplyLabel"
-$LogText   = gn "LogText"
-$LogStatus = gn "LogStatus"
-$LogScroll = gn "LogScroll"
-$LogDone   = gn "LogDone"
-$PageTitle = gn "PageTitle"
+$ApplyBar   = gn "ApplyBar"
+$ApplyLabel = gn "ApplyLabel"
+$LogText    = gn "LogText"
+$LogStatus  = gn "LogStatus"
+$LogScroll  = gn "LogScroll"
+$LogDone    = gn "LogDone"
+$PageTitle  = gn "PageTitle"
+
+# Missing UI references
+$BtnApply     = gn "BtnApply"
+$BtnDelay     = gn "BtnDelay"
+$BtnDebloat   = gn "BtnDebloat"
+$BtnGame      = gn "BtnGame"
+
+$NavOpt       = gn "NavOpt"
+$NavPro       = gn "NavPro"
+$NavSettings  = gn "NavSettings"
+
+$DelayList    = gn "DelayList"
+$DebloatList  = gn "DebloatList"
+$GameOptList  = gn "GameOptList"
+
+$GameGrid     = gn "GameGrid"
+$PlayerList   = gn "PlayerList"
+$BtnBackGames = gn "BtnBackGames"
 
 # ══════════════════════════════════════════════════════════════
 #  HELPERS
 # ══════════════════════════════════════════════════════════════
 
 function Show-Page($pg, $title="") {
-    foreach ($p in $Script:Pages) { $p.Visibility = "Collapsed" }
-    $pg.Visibility = "Visible"
-    if ($title) { $PageTitle.Text = $title }
-}
-
-function Update-ApplyBar {
-    $n = ($Script:Checks | Where-Object { $_.Tag.Checked }).Count
-    $ApplyBar.Visibility = if ($n -gt 0) { "Visible" } else { "Collapsed" }
-    if ($n -gt 0) { $ApplyLabel.Text = "$n tweak$(if($n -ne 1){'s'}) selected" }
-}
-
-function Set-NavActive($active) {
-    foreach ($nb in @((gn "NavOpt"),(gn "NavPro"),(gn "NavSettings"))) {
-        $nb.Foreground = [System.Windows.Media.SolidColorBrush][System.Windows.Media.ColorConverter]::ConvertFromString("#2e2e2e")
-        $nb.FontWeight = "Normal"
+    foreach ($p in $Script:Pages) { 
+        $p.Visibility = "Collapsed" 
     }
-    $active.Foreground = [System.Windows.Media.SolidColorBrush][System.Windows.Media.ColorConverter]::ConvertFromString("#c4b5fd")
-    $active.FontWeight = "SemiBold"
+    $pg.Visibility = "Visible"
+    if ($title -ne "") { 
+        $PageTitle.Text = $title 
+    }
 }
+
+function Build-TweakList($panel, $items) {
+    $panel.Children.Clear()
+
+    foreach ($t in $items) {
+        $cb = New-Object System.Windows.Controls.CheckBox
+        $cb.Content = $t.Name
+        $cb.Tag     = $t
+        $cb.Margin  = "0,4,0,4"
+        $cb.Foreground = "#ccc"
+        $Script:Checks += $cb
+        $panel.Children.Add($cb)
+    }
+}
+
+function Build-GameGrid {
+    $GameGrid.Children.Clear()
+    foreach ($g in $Script:Games) {
+        $btn = New-Object System.Windows.Controls.Button
+        $btn.Style = $Window.Resources["GameCard"]
+        $btn.Tag   = $g
+        $btn.Content = $g.Name
+        $btn.Add_Click({
+            Show-Page $PgProPlayers $btn.Tag.Name
+            Build-PlayerList $btn.Tag.Players
+        })
+        $GameGrid.Children.Add($btn)
+    }
+}
+
+function Build-PlayerList($players) {
+    $PlayerList.Children.Clear()
+    foreach ($p in $players) {
+        $txt = New-Object System.Windows.Controls.TextBlock
+        $txt.Text = "$($p.Name) — $($p.Team)"
+        $txt.Foreground = "#ccc"
+        $txt.Margin = "0,4,0,4"
+        $PlayerList.Children.Add($txt)
+    }
+}
+
+# ══════════════════════════════════════════════════════════════
+#  BUILD LISTS
+# ══════════════════════════════════════════════════════════════
+
+Build-TweakList $DelayList   $Script:Tweaks.Delay
+Build-TweakList $DebloatList $Script:Tweaks.Debloat
+Build-TweakList $GameOptList $Script:Tweaks.Game
+
+Build-GameGrid
+
+# ══════════════════════════════════════════════════════════════
+#  NAVIGATION
+# ══════════════════════════════════════════════════════════════
+
+$BtnDelay.Add_Click({ Show-Page $PgDelay "Delay" })
+$BtnDebloat.Add_Click({ Show-Page $PgDebloat "Debloat" })
+$BtnGame.Add_Click({ Show-Page $PgGameOpt "Game Mode" })
+
+$NavOpt.Add_Click({ Show-Page $PgOptHome "Optimizations" })
+$NavPro.Add_Click({ Show-Page $PgProGames "Pro Settings" })
+$NavSettings.Add_Click({ Show-Page $PgSettings "Settings" })
+
+$BtnBackGames.Add_Click({ Show-Page $PgProGames "Pro Settings" })
+
+# ══════════════════════════════════════════════════════════════
+#  APPLY BUTTON
+# ══════════════════════════════════════════════════════════════
+
+$BtnApply.Add_Click({
+    Show-Page $PgLog "Applying"
+    $LogText.Text = ""
+    $LogDone.Visibility = "Collapsed"
+
+    foreach ($cb in $Script:Checks) {
+        if ($cb.IsChecked) {
+            $t = $cb.Tag
+            $LogText.Text += "Applying: $($t.Name)`n"
+            try {
+                & $t.Action
+                $LogText.Text += "✔ Success`n`n"
+            } catch {
+                $LogText.Text += "✖ Failed: $_`n`n"
+            }
+        }
+    }
+
+    $LogDone.Visibility = "Visible"
+})
+
+# ══════════════════════════════════════════════════════════════
+#  SHOW WINDOW
+# ══════════════════════════════════════════════════════════════
+
+$Window.ShowDialog() | Out-Null
 
 # ══════════════════════════════════════════════════════════════
 #  BUILD TWEAK ROWS
