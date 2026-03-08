@@ -308,6 +308,18 @@ Add-Type -AssemblyName WindowsBase
                 <TextBlock Text="Pro Settings" VerticalAlignment="Center"/>
               </StackPanel>
             </Button>
+            <Button x:Name="NavNvidia" Style="{StaticResource Nav}" Margin="0,1,0,1">
+              <StackPanel Orientation="Horizontal">
+                <TextBlock Text="🟢" FontSize="11" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBlock Text="Nvidia" VerticalAlignment="Center"/>
+              </StackPanel>
+            </Button>
+            <Button x:Name="NavPing" Style="{StaticResource Nav}" Margin="0,1,0,1">
+              <StackPanel Orientation="Horizontal">
+                <TextBlock Text="📡" FontSize="11" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBlock Text="Ping Optimizer" VerticalAlignment="Center"/>
+              </StackPanel>
+            </Button>
             <Button x:Name="NavSettings" Style="{StaticResource Nav}" Margin="0,1,0,1">
               <StackPanel Orientation="Horizontal">
                 <TextBlock Text="⚙" FontSize="12" VerticalAlignment="Center" Margin="0,0,10,0"/>
@@ -603,6 +615,363 @@ Add-Type -AssemblyName WindowsBase
                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 </Grid>
               </Border>
+
+            </StackPanel>
+          </ScrollViewer>
+        </Grid>
+
+
+        <!-- ══════════ NVIDIA INSPECTOR ══════════ -->
+        <Grid x:Name="PgNvidia" Visibility="Collapsed" Margin="26,0,22,0">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+          </Grid.RowDefinitions>
+          <StackPanel Grid.Row="0" Margin="0,24,0,4">
+            <TextBlock>
+              <Run Text="Nvidia" FontFamily="Georgia" FontSize="36" FontWeight="Bold" Foreground="White"/>
+              <Run Text="." FontFamily="Georgia" FontSize="36" FontWeight="Bold" Foreground="#8b5cf6"/>
+            </TextBlock>
+            <TextBlock Text="Performance preset — no quality loss. Works via direct registry + NVI CLI."
+                       FontFamily="Segoe UI" FontSize="12" Foreground="#2a2a2a" Margin="0,6,0,0"/>
+          </StackPanel>
+          <Border Grid.Row="1" Height="1" Background="#0f0f0f" Margin="0,16,0,18"/>
+          <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="0,0,0,28" x:Name="NvidiaPanel">
+
+              <!-- STATUS -->
+              <TextBlock Text="STATUS" FontFamily="Segoe UI" FontSize="9" FontWeight="SemiBold"
+                         Foreground="#1e1e1e" Margin="0,0,0,10"/>
+              <Border Background="#0c0c0c" BorderBrush="#161616" BorderThickness="1"
+                      CornerRadius="10" Padding="20,14" Margin="0,0,0,16">
+                <Grid>
+                  <StackPanel>
+                    <TextBlock x:Name="NvStatusLabel" Text="Checking Nvidia driver..."
+                               FontFamily="Segoe UI" FontSize="13" FontWeight="SemiBold" Foreground="#888"/>
+                    <TextBlock x:Name="NvStatusDetail" Text="Scanning system"
+                               FontFamily="Segoe UI" FontSize="11" Foreground="#2a2a2a"
+                               TextWrapping="Wrap" Margin="0,5,0,0"/>
+                  </StackPanel>
+                  <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button x:Name="NvBtnNVI"    Content="Get NVI"        Style="{StaticResource Ghost}"   Margin="6,0,0,0" FontSize="11" Padding="14,7"/>
+                    <Button x:Name="NvBtnApply"  Content="Apply Preset"   Style="{StaticResource Pill}"    Margin="6,0,0,0" FontSize="11" Padding="14,7"/>
+                    <Button x:Name="NvBtnRestore" Content="Restore"       Style="{StaticResource DangerBtn}" Margin="6,0,0,0" FontSize="11" Padding="14,7"/>
+                  </StackPanel>
+                </Grid>
+              </Border>
+
+              <!-- SETTINGS BREAKDOWN -->
+              <TextBlock Text="WHAT GETS APPLIED" FontFamily="Segoe UI" FontSize="9" FontWeight="SemiBold"
+                         Foreground="#1e1e1e" Margin="0,4,0,10"/>
+
+              <!-- Row template repeated per setting -->
+              <Border Background="#0c0c0c" BorderBrush="#161616" BorderThickness="1"
+                      CornerRadius="10" Padding="18,0" Margin="0,0,0,4">
+                <StackPanel>
+                  <Border Height="1" Background="#0f0f0f" Margin="0,0,0,0" x:Name="NvSep1" Visibility="Collapsed"/>
+                  <!-- Low Latency Mode -->
+                  <Grid Margin="0,12,0,12">
+                    <StackPanel>
+                      <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Low Latency Mode" FontFamily="Segoe UI" FontSize="12"
+                                   FontWeight="SemiBold" Foreground="#aaa"/>
+                        <Border Background="#0d1a0d" BorderBrush="#1a3a1a" BorderThickness="1"
+                                CornerRadius="4" Padding="6,2" Margin="10,0,0,0">
+                          <TextBlock Text="ULTRA" FontFamily="Segoe UI" FontSize="9"
+                                     FontWeight="Bold" Foreground="#4ade80"/>
+                        </Border>
+                      </StackPanel>
+                      <TextBlock Text="Forces Nvidia to queue max 1 frame. Reduces GPU-induced input lag."
+                                 FontFamily="Segoe UI" FontSize="11" Foreground="#333"
+                                 TextWrapping="Wrap" Margin="0,4,120,0"/>
+                    </StackPanel>
+                  </Grid>
+                  <Border Height="1" Background="#0f0f0f"/>
+                  <!-- Power Management -->
+                  <Grid Margin="0,12,0,12">
+                    <StackPanel>
+                      <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Power Management Mode" FontFamily="Segoe UI" FontSize="12"
+                                   FontWeight="SemiBold" Foreground="#aaa"/>
+                        <Border Background="#0d1a0d" BorderBrush="#1a3a1a" BorderThickness="1"
+                                CornerRadius="4" Padding="6,2" Margin="10,0,0,0">
+                          <TextBlock Text="MAX PERFORMANCE" FontFamily="Segoe UI" FontSize="9"
+                                     FontWeight="Bold" Foreground="#4ade80"/>
+                        </Border>
+                      </StackPanel>
+                      <TextBlock Text="Prevents GPU clock from dropping during gameplay. Eliminates stutters from clock scaling."
+                                 FontFamily="Segoe UI" FontSize="11" Foreground="#333"
+                                 TextWrapping="Wrap" Margin="0,4,120,0"/>
+                    </StackPanel>
+                  </Grid>
+                  <Border Height="1" Background="#0f0f0f"/>
+                  <!-- Shader Cache -->
+                  <Grid Margin="0,12,0,12">
+                    <StackPanel>
+                      <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Shader Cache Size" FontFamily="Segoe UI" FontSize="12"
+                                   FontWeight="SemiBold" Foreground="#aaa"/>
+                        <Border Background="#0d1a0d" BorderBrush="#1a3a1a" BorderThickness="1"
+                                CornerRadius="4" Padding="6,2" Margin="10,0,0,0">
+                          <TextBlock Text="UNLIMITED" FontFamily="Segoe UI" FontSize="9"
+                                     FontWeight="Bold" Foreground="#4ade80"/>
+                        </Border>
+                      </StackPanel>
+                      <TextBlock Text="Caches all compiled shaders. Eliminates stutter on first load after driver update."
+                                 FontFamily="Segoe UI" FontSize="11" Foreground="#333"
+                                 TextWrapping="Wrap" Margin="0,4,120,0"/>
+                    </StackPanel>
+                  </Grid>
+                  <Border Height="1" Background="#0f0f0f"/>
+                  <!-- Texture Filtering -->
+                  <Grid Margin="0,12,0,12">
+                    <StackPanel>
+                      <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Texture Filtering Quality" FontFamily="Segoe UI" FontSize="12"
+                                   FontWeight="SemiBold" Foreground="#aaa"/>
+                        <Border Background="#0d1a0d" BorderBrush="#1a3a1a" BorderThickness="1"
+                                CornerRadius="4" Padding="6,2" Margin="10,0,0,0">
+                          <TextBlock Text="HIGH PERFORMANCE" FontFamily="Segoe UI" FontSize="9"
+                                     FontWeight="Bold" Foreground="#4ade80"/>
+                        </Border>
+                      </StackPanel>
+                      <TextBlock Text="Bilinear filtering with performance priority. No visual difference in competitive titles."
+                                 FontFamily="Segoe UI" FontSize="11" Foreground="#333"
+                                 TextWrapping="Wrap" Margin="0,4,120,0"/>
+                    </StackPanel>
+                  </Grid>
+                  <Border Height="1" Background="#0f0f0f"/>
+                  <!-- VSync -->
+                  <Grid Margin="0,12,0,12">
+                    <StackPanel>
+                      <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Vertical Sync (VSync)" FontFamily="Segoe UI" FontSize="12"
+                                   FontWeight="SemiBold" Foreground="#aaa"/>
+                        <Border Background="#1a0d0d" BorderBrush="#3a1a1a" BorderThickness="1"
+                                CornerRadius="4" Padding="6,2" Margin="10,0,0,0">
+                          <TextBlock Text="OFF" FontFamily="Segoe UI" FontSize="9"
+                                     FontWeight="Bold" Foreground="#f87171"/>
+                        </Border>
+                      </StackPanel>
+                      <TextBlock Text="Forces VSync off driver-side. Use in-game VSync setting if you need it."
+                                 FontFamily="Segoe UI" FontSize="11" Foreground="#333"
+                                 TextWrapping="Wrap" Margin="0,4,120,0"/>
+                    </StackPanel>
+                  </Grid>
+                  <Border Height="1" Background="#0f0f0f"/>
+                  <!-- MFAA -->
+                  <Grid Margin="0,12,0,12">
+                    <StackPanel>
+                      <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Multi-Frame Sampled AA (MFAA)" FontFamily="Segoe UI" FontSize="12"
+                                   FontWeight="SemiBold" Foreground="#aaa"/>
+                        <Border Background="#1a0d0d" BorderBrush="#3a1a1a" BorderThickness="1"
+                                CornerRadius="4" Padding="6,2" Margin="10,0,0,0">
+                          <TextBlock Text="OFF" FontFamily="Segoe UI" FontSize="9"
+                                     FontWeight="Bold" Foreground="#f87171"/>
+                        </Border>
+                      </StackPanel>
+                      <TextBlock Text="Disabled for raw FPS. Enable only if you use MSAA in-game."
+                                 FontFamily="Segoe UI" FontSize="11" Foreground="#333"
+                                 TextWrapping="Wrap" Margin="0,4,120,0"/>
+                    </StackPanel>
+                  </Grid>
+                  <Border Height="1" Background="#0f0f0f"/>
+                  <!-- Threaded Optimization -->
+                  <Grid Margin="0,12,0,12">
+                    <StackPanel>
+                      <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Threaded Optimization" FontFamily="Segoe UI" FontSize="12"
+                                   FontWeight="SemiBold" Foreground="#aaa"/>
+                        <Border Background="#0d1a0d" BorderBrush="#1a3a1a" BorderThickness="1"
+                                CornerRadius="4" Padding="6,2" Margin="10,0,0,0">
+                          <TextBlock Text="ON" FontFamily="Segoe UI" FontSize="9"
+                                     FontWeight="Bold" Foreground="#4ade80"/>
+                        </Border>
+                      </StackPanel>
+                      <TextBlock Text="Uses multiple CPU threads for OpenGL. Significant FPS boost in older engines."
+                                 FontFamily="Segoe UI" FontSize="11" Foreground="#333"
+                                 TextWrapping="Wrap" Margin="0,4,120,0"/>
+                    </StackPanel>
+                  </Grid>
+                </StackPanel>
+              </Border>
+
+              <!-- NVI NOTE -->
+              <Border Background="#0d0d14" BorderBrush="#1e1e2e" BorderThickness="1"
+                      CornerRadius="10" Padding="18,14" Margin="0,12,0,0">
+                <StackPanel>
+                  <TextBlock Text="ℹ  About Nvidia Inspector" FontFamily="Segoe UI" FontSize="11"
+                             FontWeight="SemiBold" Foreground="#5555aa" Margin="0,0,0,6"/>
+                  <TextBlock TextWrapping="Wrap" FontFamily="Segoe UI" FontSize="11" Foreground="#333">
+                    <Run Text="Wrath applies settings two ways: directly via Windows registry (instant, no tools needed), and via "/>
+                    <Run Text="Nvidia Profile Inspector CLI" FontWeight="SemiBold" Foreground="#6666cc"/>
+                    <Run Text=" for driver-level profile overrides. NVI is downloaded automatically if not found."/>
+                  </TextBlock>
+                </StackPanel>
+              </Border>
+
+            </StackPanel>
+          </ScrollViewer>
+        </Grid>
+
+        <!-- ══════════ PING OPTIMIZER ══════════ -->
+        <Grid x:Name="PgPing" Visibility="Collapsed" Margin="26,0,22,0">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+          </Grid.RowDefinitions>
+          <StackPanel Grid.Row="0" Margin="0,24,0,4">
+            <TextBlock>
+              <Run Text="Ping" FontFamily="Georgia" FontSize="36" FontWeight="Bold" Foreground="White"/>
+              <Run Text="." FontFamily="Georgia" FontSize="36" FontWeight="Bold" Foreground="#8b5cf6"/>
+            </TextBlock>
+            <TextBlock Text="TCP/IP + QoS tweaks. Auto-detects your running game."
+                       FontFamily="Segoe UI" FontSize="12" Foreground="#2a2a2a" Margin="0,6,0,0"/>
+          </StackPanel>
+          <Border Grid.Row="1" Height="1" Background="#0f0f0f" Margin="0,16,0,18"/>
+          <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="0,0,0,28">
+
+              <!-- DETECTED GAME -->
+              <TextBlock Text="DETECTED GAME" FontFamily="Segoe UI" FontSize="9" FontWeight="SemiBold"
+                         Foreground="#1e1e1e" Margin="0,0,0,10"/>
+              <Border Background="#0c0c0c" BorderBrush="#161616" BorderThickness="1"
+                      CornerRadius="10" Padding="20,14" Margin="0,0,0,16">
+                <Grid>
+                  <StackPanel VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                      <TextBlock x:Name="PingGameIcon" Text="⬜" FontSize="20"
+                                 VerticalAlignment="Center" Margin="0,0,12,0"/>
+                      <StackPanel VerticalAlignment="Center">
+                        <TextBlock x:Name="PingGameLabel" Text="No game detected"
+                                   FontFamily="Segoe UI" FontSize="13" FontWeight="SemiBold" Foreground="#444"/>
+                        <TextBlock x:Name="PingGameSub" Text="Launch a supported game to begin"
+                                   FontFamily="Segoe UI" FontSize="11" Foreground="#2a2a2a"/>
+                      </StackPanel>
+                    </StackPanel>
+                  </StackPanel>
+                  <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <TextBlock x:Name="PingGameStatus" Text="● IDLE"
+                               FontFamily="Segoe UI" FontSize="11" FontWeight="SemiBold"
+                               Foreground="#222" VerticalAlignment="Center" Margin="0,0,14,0"/>
+                    <Button x:Name="PingBtnScan" Content="Scan Now" Style="{StaticResource Ghost}"
+                            FontSize="11" Padding="14,7"/>
+                  </StackPanel>
+                </Grid>
+              </Border>
+
+              <!-- TWEAKS -->
+              <TextBlock Text="TCP/IP + QoS TWEAKS" FontFamily="Segoe UI" FontSize="9" FontWeight="SemiBold"
+                         Foreground="#1e1e1e" Margin="0,4,0,10"/>
+              <Border Background="#0c0c0c" BorderBrush="#161616" BorderThickness="1"
+                      CornerRadius="10" Padding="18,0" Margin="0,0,0,4">
+                <StackPanel>
+                  <Grid Margin="0,12,0,12">
+                    <StackPanel>
+                      <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Disable Nagle's Algorithm" FontFamily="Segoe UI" FontSize="12"
+                                   FontWeight="SemiBold" Foreground="#aaa"/>
+                        <Border Background="#0d1a0d" BorderBrush="#1a3a1a" BorderThickness="1"
+                                CornerRadius="4" Padding="6,2" Margin="10,0,0,0">
+                          <TextBlock Text="HIGH IMPACT" FontFamily="Segoe UI" FontSize="9"
+                                     FontWeight="Bold" Foreground="#4ade80"/>
+                        </Border>
+                      </StackPanel>
+                      <TextBlock Text="Sets TcpAckFrequency=1 and TCPNoDelay=1. Stops TCP batching small packets — most impactful single ping tweak."
+                                 FontFamily="Segoe UI" FontSize="11" Foreground="#333"
+                                 TextWrapping="Wrap" Margin="0,4,0,0"/>
+                    </StackPanel>
+                  </Grid>
+                  <Border Height="1" Background="#0f0f0f"/>
+                  <Grid Margin="0,12,0,12">
+                    <StackPanel>
+                      <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Disable Network Throttling" FontFamily="Segoe UI" FontSize="12"
+                                   FontWeight="SemiBold" Foreground="#aaa"/>
+                        <Border Background="#0d1a0d" BorderBrush="#1a3a1a" BorderThickness="1"
+                                CornerRadius="4" Padding="6,2" Margin="10,0,0,0">
+                          <TextBlock Text="REC" FontFamily="Segoe UI" FontSize="9"
+                                     FontWeight="Bold" Foreground="#4ade80"/>
+                        </Border>
+                      </StackPanel>
+                      <TextBlock Text="Sets NetworkThrottlingIndex=FFFFFFFF. Windows throttles multimedia network traffic by default — this removes the cap."
+                                 FontFamily="Segoe UI" FontSize="11" Foreground="#333"
+                                 TextWrapping="Wrap" Margin="0,4,0,0"/>
+                    </StackPanel>
+                  </Grid>
+                  <Border Height="1" Background="#0f0f0f"/>
+                  <Grid Margin="0,12,0,12">
+                    <StackPanel>
+                      <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Disable TCP Auto-Tuning" FontFamily="Segoe UI" FontSize="12"
+                                   FontWeight="SemiBold" Foreground="#aaa"/>
+                        <Border Background="#0d1a0d" BorderBrush="#1a3a1a" BorderThickness="1"
+                                CornerRadius="4" Padding="6,2" Margin="10,0,0,0">
+                          <TextBlock Text="REC" FontFamily="Segoe UI" FontSize="9"
+                                     FontWeight="Bold" Foreground="#4ade80"/>
+                        </Border>
+                      </StackPanel>
+                      <TextBlock Text="Disables dynamic receive window scaling. Reduces jitter on stable connections."
+                                 FontFamily="Segoe UI" FontSize="11" Foreground="#333"
+                                 TextWrapping="Wrap" Margin="0,4,0,0"/>
+                    </StackPanel>
+                  </Grid>
+                  <Border Height="1" Background="#0f0f0f"/>
+                  <Grid Margin="0,12,0,12">
+                    <StackPanel>
+                      <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="DNS → Cloudflare 1.1.1.1" FontFamily="Segoe UI" FontSize="12"
+                                   FontWeight="SemiBold" Foreground="#aaa"/>
+                        <Border Background="#0d1a0d" BorderBrush="#1a3a1a" BorderThickness="1"
+                                CornerRadius="4" Padding="6,2" Margin="10,0,0,0">
+                          <TextBlock Text="REC" FontFamily="Segoe UI" FontSize="9"
+                                     FontWeight="Bold" Foreground="#4ade80"/>
+                        </Border>
+                      </StackPanel>
+                      <TextBlock Text="Fastest public DNS resolver. Reduces matchmaking and lobby load times."
+                                 FontFamily="Segoe UI" FontSize="11" Foreground="#333"
+                                 TextWrapping="Wrap" Margin="0,4,0,0"/>
+                    </StackPanel>
+                  </Grid>
+                  <Border Height="1" Background="#0f0f0f"/>
+                  <Grid Margin="0,12,0,12">
+                    <StackPanel>
+                      <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="QoS Policy for Detected Game" FontFamily="Segoe UI" FontSize="12"
+                                   FontWeight="SemiBold" Foreground="#aaa"/>
+                        <Border Background="#0d1a0d" BorderBrush="#1a3a1a" BorderThickness="1"
+                                CornerRadius="4" Padding="6,2" Margin="10,0,0,0">
+                          <TextBlock Text="HIGH IMPACT" FontFamily="Segoe UI" FontSize="9"
+                                     FontWeight="Bold" Foreground="#4ade80"/>
+                        </Border>
+                      </StackPanel>
+                      <TextBlock x:Name="PingQoSDesc"
+                                 Text="Creates a Windows QoS policy tagged DSCP 46 for the detected game exe. Prioritizes game packets over all other traffic on your network."
+                                 FontFamily="Segoe UI" FontSize="11" Foreground="#333"
+                                 TextWrapping="Wrap" Margin="0,4,0,0"/>
+                    </StackPanel>
+                  </Grid>
+                </StackPanel>
+              </Border>
+
+              <!-- APPLY TWEAKS -->
+              <Grid Margin="0,12,0,0">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="Auto"/>
+                  <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="PingTweakStatus" Grid.Column="0"
+                           Text="Apply all tweaks to improve your connection quality."
+                           FontFamily="Segoe UI" FontSize="11" Foreground="#333" VerticalAlignment="Center"/>
+                <Button x:Name="PingBtnApply"   Content="Apply Tweaks"   Grid.Column="1"
+                        Style="{StaticResource Pill}" Margin="0,0,8,0" FontSize="11" Padding="18,9"/>
+                <Button x:Name="PingBtnRestore" Content="Restore"        Grid.Column="2"
+                        Style="{StaticResource DangerBtn}" FontSize="11" Padding="14,9"/>
+              </Grid>
 
             </StackPanel>
           </ScrollViewer>
@@ -931,6 +1300,8 @@ $PgLog        = gn "PgLog";        $Script:Pages += $PgLog
 $PgProGames   = gn "PgProGames";   $Script:Pages += $PgProGames
 $PgProPlayers = gn "PgProPlayers"; $Script:Pages += $PgProPlayers
 $PgSettings   = gn "PgSettings";   $Script:Pages += $PgSettings
+$PgNvidia     = gn "PgNvidia";     $Script:Pages += $PgNvidia
+$PgPing       = gn "PgPing";       $Script:Pages += $PgPing
 
 $ApplyBar  = gn "ApplyBar"
 $ApplyLabel= gn "ApplyLabel"
@@ -957,7 +1328,7 @@ function Update-ApplyBar {
 }
 
 function Set-NavActive($active) {
-    foreach ($nb in @((gn "NavOpt"),(gn "NavPro"),(gn "NavSettings"))) {
+    foreach ($nb in @((gn "NavOpt"),(gn "NavPro"),(gn "NavNvidia"),(gn "NavPing"),(gn "NavSettings"))) {
         $nb.Foreground = [System.Windows.Media.SolidColorBrush][System.Windows.Media.ColorConverter]::ConvertFromString("#2e2e2e")
         $nb.FontWeight = "Normal"
     }
@@ -1534,6 +1905,18 @@ $SidebarArrow = gn "SidebarArrow"
     Show-Page $PgProGames "Pro Settings"
     $ApplyBar.Visibility = "Collapsed"
 })
+(gn "NavNvidia").Add_Click({
+    Set-NavActive (gn "NavNvidia")
+    Show-Page $PgNvidia "Nvidia"
+    $ApplyBar.Visibility = "Collapsed"
+    Update-NvidiaStatus
+})
+(gn "NavPing").Add_Click({
+    Set-NavActive (gn "NavPing")
+    Show-Page $PgPing "Ping Optimizer"
+    $ApplyBar.Visibility = "Collapsed"
+    Start-GameDetection
+})
 (gn "NavSettings").Add_Click({
     Set-NavActive (gn "NavSettings")
     Show-Page $PgSettings "Settings"
@@ -1640,6 +2023,309 @@ $LogDone.Add_Click({
     Show-Page $PgOptHome "Optimizations"
     Set-NavActive (gn "NavOpt")
 })
+
+
+# ══════════════════════════════════════════════════════════════
+#  NVIDIA INSPECTOR
+# ══════════════════════════════════════════════════════════════
+
+$script:NviPath = "$env:LOCALAPPDATA\Wrath\nvidiaProfileInspector.exe"
+$script:NviUrl  = "https://github.com/Orbmu2k/nvidiaProfileInspector/releases/latest/download/nvidiaProfileInspector.zip"
+
+function Update-NvidiaStatus {
+    $lbl = gn "NvStatusLabel"; $det = gn "NvStatusDetail"
+    if (-not $lbl) { return }
+    $gpu = Get-WmiObject Win32_VideoController -EA SilentlyContinue | Where-Object { $_.Name -match "NVIDIA" } | Select-Object -First 1
+    if (-not $gpu) {
+        $lbl.Text = "No Nvidia GPU detected"
+        $lbl.Foreground = [System.Windows.Media.SolidColorBrush][System.Windows.Media.ColorConverter]::ConvertFromString("#f87171")
+        $det.Text = "This tab requires an Nvidia graphics card."
+        (gn "NvBtnApply").IsEnabled = $false; (gn "NvBtnNVI").IsEnabled = $false; return
+    }
+    $lbl.Text = $gpu.Name
+    $lbl.Foreground = [System.Windows.Media.SolidColorBrush][System.Windows.Media.ColorConverter]::ConvertFromString("#4ade80")
+    if (Test-Path $script:NviPath) {
+        $det.Text = "Nvidia Profile Inspector found. Ready to apply preset."
+        (gn "NvBtnNVI").IsEnabled = $false; (gn "NvBtnNVI").Content = "NVI Ready"
+    } else {
+        $det.Text = "NVI not found. Click 'Get NVI' to download, or Apply uses registry directly."
+        (gn "NvBtnNVI").IsEnabled = $true; (gn "NvBtnNVI").Content = "Get NVI"
+    }
+    (gn "NvBtnApply").IsEnabled = $true
+}
+
+function Get-NVI {
+    $dir = Split-Path $script:NviPath
+    if (-not (Test-Path $dir)) { New-Item $dir -ItemType Directory -Force | Out-Null }
+    $zip = "$dir\nvi.zip"
+    try {
+        (gn "NvStatusDetail").Text = "Downloading Nvidia Profile Inspector..."
+        Invoke-WebRequest -Uri $script:NviUrl -OutFile $zip -UseBasicParsing -EA Stop
+        Expand-Archive -Path $zip -DestinationPath $dir -Force -EA Stop
+        Remove-Item $zip -Force -EA SilentlyContinue
+        $found = Get-ChildItem $dir -Filter "nvidiaProfileInspector.exe" -Recurse -EA SilentlyContinue | Select-Object -First 1
+        if ($found -and $found.FullName -ne $script:NviPath) { Copy-Item $found.FullName $script:NviPath -Force }
+        Update-NvidiaStatus
+    } catch {
+        (gn "NvStatusDetail").Text = "Download failed: $($_.Exception.Message). Registry apply will still work."
+    }
+}
+
+function Apply-NvidiaPreset {
+    $det = gn "NvStatusDetail"
+    $det.Text = "Applying Nvidia performance preset..."
+    $errors = @()
+
+    try {
+        $nvKey = "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers"
+        if (!(Test-Path $nvKey)) { New-Item $nvKey -Force | Out-Null }
+        Set-ItemProperty $nvKey -Name "D3DPerfControl" -Value 2 -Type DWord -Force -EA Stop
+    } catch { $errors += "Low Latency: $_" }
+
+    try {
+        $nvPwrKey = "HKLM:\SOFTWARE\NVIDIA Corporation\NvControlPanel2\Client"
+        if (!(Test-Path $nvPwrKey)) { New-Item $nvPwrKey -Force | Out-Null }
+        Set-ItemProperty $nvPwrKey -Name "OptimalPowerManagement" -Value 1 -Type DWord -Force -EA SilentlyContinue
+        Set-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers" -Name "PerfLevelSrc" -Value 0x2222 -Type DWord -Force -EA SilentlyContinue
+    } catch { $errors += "Power: $_" }
+
+    try {
+        $nvDrvKey = "HKCU:\SOFTWARE\NVIDIA Corporation\Global\NVTweak"
+        if (!(Test-Path $nvDrvKey)) { New-Item $nvDrvKey -Force | Out-Null }
+        Set-ItemProperty $nvDrvKey -Name "Vsync" -Value 0 -Type DWord -Force -EA Stop
+    } catch { $errors += "VSync: $_" }
+
+    try {
+        $scKey = "HKLM:\SOFTWARE\NVIDIA Corporation\Global\FTS"
+        if (!(Test-Path $scKey)) { New-Item $scKey -Force | Out-Null }
+        Set-ItemProperty $scKey -Name "EnableGpuShadersCache" -Value 1 -Type DWord -Force -EA SilentlyContinue
+    } catch { $errors += "Shader Cache: $_" }
+
+    # NVI CLI apply
+    if (Test-Path $script:NviPath) {
+        try {
+            $xmlPath = "$env:TEMP\wrath_nvi_preset.nip"
+@"
+<?xml version="1.0" encoding="utf-16"?>
+<ArrayOfProfile>
+  <Profile>
+    <ProfileName>Base Profile</ProfileName>
+    <Executeables/>
+    <Settings>
+      <ProfileSetting>
+        <SettingNameInfo>Ultra Low Latency mode</SettingNameInfo>
+        <SettingID>0x10835000</SettingID>
+        <SettingValue>0x00000002</SettingValue>
+        <SettingType>Value</SettingType>
+      </ProfileSetting>
+      <ProfileSetting>
+        <SettingNameInfo>Power management mode</SettingNameInfo>
+        <SettingID>0x10835003</SettingID>
+        <SettingValue>0x00000001</SettingValue>
+        <SettingType>Value</SettingType>
+      </ProfileSetting>
+      <ProfileSetting>
+        <SettingNameInfo>Texture filtering - Quality</SettingNameInfo>
+        <SettingID>0x00E73211</SettingID>
+        <SettingValue>0x00000020</SettingValue>
+        <SettingType>Value</SettingType>
+      </ProfileSetting>
+    </Settings>
+  </Profile>
+</ArrayOfProfile>
+"@ | Set-Content $xmlPath -Encoding Unicode
+            $proc = Start-Process $script:NviPath -ArgumentList "`"$xmlPath`"" -Wait -PassThru -WindowStyle Hidden
+            Remove-Item $xmlPath -Force -EA SilentlyContinue
+            if ($proc.ExitCode -eq 0) {
+                $det.Text = "Preset applied via registry + NVI CLI. Restart recommended."
+            } else {
+                $det.Text = "Registry applied. NVI CLI returned $($proc.ExitCode)."
+            }
+        } catch {
+            $det.Text = "Registry applied. NVI CLI error: $($_.Exception.Message)"
+        }
+    } else {
+        $det.Text = if ($errors.Count -eq 0) {
+            "Registry preset applied. Click 'Get NVI' for full driver-level overrides."
+        } else { "Partial: $($errors -join ' | ')" }
+    }
+}
+
+function Restore-NvidiaPreset {
+    try {
+        $nvKey = "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers"
+        Remove-ItemProperty $nvKey -Name "D3DPerfControl" -Force -EA SilentlyContinue
+        Remove-ItemProperty $nvKey -Name "PerfLevelSrc"   -Force -EA SilentlyContinue
+        $nvDrvKey = "HKCU:\SOFTWARE\NVIDIA Corporation\Global\NVTweak"
+        Remove-ItemProperty $nvDrvKey -Name "Vsync" -Force -EA SilentlyContinue
+        (gn "NvStatusDetail").Text = "Nvidia registry values restored to defaults."
+    } catch {
+        (gn "NvStatusDetail").Text = "Restore error: $($_.Exception.Message)"
+    }
+}
+
+(gn "NvBtnNVI").Add_Click({
+    $Window.Dispatcher.InvokeAsync([System.Action]{ Get-NVI }) | Out-Null
+})
+(gn "NvBtnApply").Add_Click({
+    $Window.Dispatcher.InvokeAsync([System.Action]{ Apply-NvidiaPreset }) | Out-Null
+})
+(gn "NvBtnRestore").Add_Click({
+    if ([System.Windows.MessageBox]::Show("Restore Nvidia settings to Windows defaults?","Confirm","YesNo","Question") -eq "Yes") {
+        Restore-NvidiaPreset
+    }
+})
+Add-Glow (gn "NvBtnApply")
+Add-Glow (gn "NvBtnNVI")
+Add-Glow (gn "NvBtnRestore") "#e05050" 14 0.4
+
+# ══════════════════════════════════════════════════════════════
+#  PING OPTIMIZER
+# ══════════════════════════════════════════════════════════════
+
+$script:KnownGames = @(
+    [PSCustomObject]@{ Name="Counter-Strike 2";   Icon="🎯"; Exe="cs2";                          QosExe="cs2.exe"                          }
+    [PSCustomObject]@{ Name="VALORANT";           Icon="🔺"; Exe="VALORANT-Win64-Shipping";       QosExe="VALORANT-Win64-Shipping.exe"      }
+    [PSCustomObject]@{ Name="Fortnite";           Icon="🏗";  Exe="FortniteClient-Win64-Shipping"; QosExe="FortniteClient-Win64-Shipping.exe" }
+    [PSCustomObject]@{ Name="Apex Legends";       Icon="🔶"; Exe="r5apex";                        QosExe="r5apex.exe"                       }
+    [PSCustomObject]@{ Name="Overwatch 2";        Icon="🛡";  Exe="Overwatch";                     QosExe="Overwatch.exe"                    }
+    [PSCustomObject]@{ Name="Rainbow Six Siege";  Icon="💥"; Exe="RainbowSix";                    QosExe="RainbowSix.exe"                   }
+    [PSCustomObject]@{ Name="Call of Duty";       Icon="🎖";  Exe="cod";                           QosExe="cod.exe"                          }
+    [PSCustomObject]@{ Name="Warframe";           Icon="⚔";  Exe="Warframe.x64";                  QosExe="Warframe.x64.exe"                 }
+)
+$script:DetectedGame  = $null
+$script:GameScanTimer = $null
+
+function Scan-ForGame {
+    $running = Get-Process -EA SilentlyContinue | Select-Object -ExpandProperty ProcessName
+    foreach ($g in $script:KnownGames) {
+        if ($running -contains $g.Exe) { return $g }
+    }
+    return $null
+}
+
+function Update-PingGameUI($game) {
+    $iconLbl   = gn "PingGameIcon"
+    $nameLbl   = gn "PingGameLabel"
+    $subLbl    = gn "PingGameSub"
+    $statusLbl = gn "PingGameStatus"
+    $qosDesc   = gn "PingQoSDesc"
+    if (-not $iconLbl) { return }
+    if ($game) {
+        $iconLbl.Text  = $game.Icon
+        $nameLbl.Text  = $game.Name
+        $nameLbl.Foreground = [System.Windows.Media.SolidColorBrush][System.Windows.Media.ColorConverter]::ConvertFromString("#ffffff")
+        $subLbl.Text   = "Game detected and running"
+        $statusLbl.Text = "● ACTIVE"
+        $statusLbl.Foreground = [System.Windows.Media.SolidColorBrush][System.Windows.Media.ColorConverter]::ConvertFromString("#4ade80")
+        $qosDesc.Text  = "QoS policy will be created for: $($game.QosExe) — DSCP 46, highest network priority."
+    } else {
+        $iconLbl.Text  = "—"
+        $nameLbl.Text  = "No game detected"
+        $nameLbl.Foreground = [System.Windows.Media.SolidColorBrush][System.Windows.Media.ColorConverter]::ConvertFromString("#444444")
+        $subLbl.Text   = "Launch CS2, VALORANT, Fortnite, Apex, OW2, R6, CoD, or Warframe"
+        $statusLbl.Text = "● IDLE"
+        $statusLbl.Foreground = [System.Windows.Media.SolidColorBrush][System.Windows.Media.ColorConverter]::ConvertFromString("#333333")
+        $qosDesc.Text  = "Creates a Windows QoS policy tagged DSCP 46 for the detected game exe. Prioritizes game packets over all other traffic on your network."
+    }
+}
+
+function Start-GameDetection {
+    if ($script:GameScanTimer) { $script:GameScanTimer.Stop() }
+    $script:DetectedGame = Scan-ForGame
+    Update-PingGameUI $script:DetectedGame
+    $script:GameScanTimer = New-Object System.Windows.Threading.DispatcherTimer
+    $script:GameScanTimer.Interval = [System.TimeSpan]::FromSeconds(5)
+    $script:GameScanTimer.Add_Tick({
+        $found = Scan-ForGame
+        if ($null -eq $found -and $null -ne $script:DetectedGame) {
+            $script:DetectedGame = $null; Update-PingGameUI $null
+        } elseif ($null -ne $found -and ($null -eq $script:DetectedGame -or $found.Exe -ne $script:DetectedGame.Exe)) {
+            $script:DetectedGame = $found; Update-PingGameUI $found
+        }
+    })
+    $script:GameScanTimer.Start()
+}
+
+function Apply-PingTweaks {
+    $status = gn "PingTweakStatus"
+    $errors = @()
+
+    try {
+        $ifaces = Get-ChildItem "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces" -EA Stop
+        foreach ($iface in $ifaces) {
+            Set-ItemProperty $iface.PSPath -Name TcpAckFrequency -Value 1 -Type DWord -Force -EA SilentlyContinue
+            Set-ItemProperty $iface.PSPath -Name TCPNoDelay      -Value 1 -Type DWord -Force -EA SilentlyContinue
+        }
+    } catch { $errors += "Nagle: $_" }
+
+    try {
+        $mmKey = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile"
+        Set-ItemProperty $mmKey -Name NetworkThrottlingIndex -Value 0xFFFFFFFF -Type DWord -Force -EA Stop
+        Set-ItemProperty $mmKey -Name SystemResponsiveness   -Value 0          -Type DWord -Force -EA SilentlyContinue
+    } catch { $errors += "Throttle: $_" }
+
+    try { netsh interface tcp set global autotuninglevel=disabled 2>$null } catch { $errors += "AutoTune: $_" }
+
+    try {
+        Get-NetAdapter | Where-Object Status -eq Up | ForEach-Object {
+            Set-DnsClientServerAddress -InterfaceIndex $_.InterfaceIndex -ServerAddresses "1.1.1.1","1.0.0.1" -EA SilentlyContinue
+        }
+    } catch { $errors += "DNS: $_" }
+
+    if ($script:DetectedGame) {
+        try {
+            $polName = "Wrath_$($script:DetectedGame.Name -replace ' ','_')"
+            Remove-NetQosPolicy -Name $polName -Confirm:$false -EA SilentlyContinue
+            New-NetQosPolicy -Name $polName `
+                -AppPathNameMatchCondition $script:DetectedGame.QosExe `
+                -IPProtocolMatchCondition Both -DSCPAction 46 `
+                -NetworkProfile All -EA Stop | Out-Null
+        } catch { $errors += "QoS: $_" }
+    }
+
+    if ($errors.Count -eq 0) {
+        $msg = if ($script:DetectedGame) { "All tweaks applied. QoS active for $($script:DetectedGame.Name)." } else { "TCP/IP tweaks applied. Launch a game and re-apply for QoS." }
+        $status.Text = "✓  $msg"
+        $status.Foreground = [System.Windows.Media.SolidColorBrush][System.Windows.Media.ColorConverter]::ConvertFromString("#4ade80")
+    } else {
+        $status.Text = "Applied with errors: $($errors -join ' | ')"
+        $status.Foreground = [System.Windows.Media.SolidColorBrush][System.Windows.Media.ColorConverter]::ConvertFromString("#fbbf24")
+    }
+}
+
+function Restore-PingTweaks {
+    try {
+        $ifaces = Get-ChildItem "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces" -EA SilentlyContinue
+        foreach ($iface in $ifaces) {
+            Remove-ItemProperty $iface.PSPath -Name TcpAckFrequency -Force -EA SilentlyContinue
+            Remove-ItemProperty $iface.PSPath -Name TCPNoDelay      -Force -EA SilentlyContinue
+        }
+        $mmKey = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile"
+        Set-ItemProperty $mmKey -Name NetworkThrottlingIndex -Value 10 -Type DWord -Force -EA SilentlyContinue
+        Set-ItemProperty $mmKey -Name SystemResponsiveness   -Value 20 -Type DWord -Force -EA SilentlyContinue
+        netsh interface tcp set global autotuninglevel=normal 2>$null
+        Get-NetQosPolicy -EA SilentlyContinue | Where-Object { $_.Name -like "Wrath_*" } | Remove-NetQosPolicy -Confirm:$false -EA SilentlyContinue
+        $status = gn "PingTweakStatus"
+        $status.Text = "All network settings restored to Windows defaults."
+        $status.Foreground = [System.Windows.Media.SolidColorBrush][System.Windows.Media.ColorConverter]::ConvertFromString("#888888")
+    } catch {
+        (gn "PingTweakStatus").Text = "Restore error: $($_.Exception.Message)"
+    }
+}
+
+(gn "PingBtnScan").Add_Click({ $script:DetectedGame = Scan-ForGame; Update-PingGameUI $script:DetectedGame })
+(gn "PingBtnApply").Add_Click({ $Window.Dispatcher.InvokeAsync([System.Action]{ Apply-PingTweaks }) | Out-Null })
+(gn "PingBtnRestore").Add_Click({
+    if ([System.Windows.MessageBox]::Show("Restore all network settings to Windows defaults?","Confirm","YesNo","Question") -eq "Yes") {
+        $Window.Dispatcher.InvokeAsync([System.Action]{ Restore-PingTweaks }) | Out-Null
+    }
+})
+Add-Glow (gn "PingBtnApply")
+Add-Glow (gn "PingBtnScan")
+Add-Glow (gn "PingBtnRestore") "#e05050" 14 0.4
+
+$Window.Add_Closing({ if ($script:GameScanTimer) { $script:GameScanTimer.Stop() } })
 
 # ══════════════════════════════════════════════════════════════
 #  LAUNCH
