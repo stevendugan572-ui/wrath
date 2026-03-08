@@ -260,7 +260,7 @@ Add-Type -AssemblyName WindowsBase
   </Window.Resources>
 
   <Border Background="#070707" CornerRadius="14" BorderBrush="#161616" BorderThickness="1">
-    <Grid>
+    <Grid x:Name="RootGrid">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="210"/>
         <ColumnDefinition Width="*"/>
@@ -272,9 +272,9 @@ Add-Type -AssemblyName WindowsBase
       </Grid.RowDefinitions>
 
       <!-- ════════════════ SIDEBAR ════════════════ -->
-      <Border Grid.Column="0" Grid.RowSpan="3"
+      <Border x:Name="SidebarBorder" Grid.Column="0" Grid.RowSpan="3"
               Background="#050505" CornerRadius="14,0,0,14"
-              BorderBrush="#111" BorderThickness="0,0,1,0">
+              BorderBrush="#111" BorderThickness="0,0,1,0" ClipToBounds="True">
         <DockPanel>
           <!-- Logo -->
           <StackPanel DockPanel.Dock="Top" Margin="20,22,20,18">
@@ -319,11 +319,17 @@ Add-Type -AssemblyName WindowsBase
 
       <!-- ════════════════ TITLE BAR ════════════════ -->
       <Border Grid.Column="1" Grid.Row="0" x:Name="TitleBar"
-              Background="Transparent" CornerRadius="0,14,0,0" Padding="26,0,14,0">
+              Background="Transparent" CornerRadius="0,14,0,0" Padding="10,0,14,0">
         <Grid VerticalAlignment="Center">
-          <TextBlock x:Name="PageTitle" Text="Optimizations"
-                     FontFamily="Segoe UI" FontSize="13" FontWeight="SemiBold"
-                     Foreground="#222" VerticalAlignment="Center"/>
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <Button x:Name="BtnToggleSidebar" Style="{StaticResource Chrome}" Margin="0,0,10,0"
+                    ToolTip="Toggle sidebar">
+              <TextBlock FontFamily="Segoe UI" FontSize="14" Text="&#x2630;" Foreground="#3a3a3a"/>
+            </Button>
+            <TextBlock x:Name="PageTitle" Text="Optimizations"
+                       FontFamily="Segoe UI" FontSize="13" FontWeight="SemiBold"
+                       Foreground="#222" VerticalAlignment="Center"/>
+          </StackPanel>
           <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
             <Button x:Name="BtnMin"   Content="&#x2212;" Style="{StaticResource Chrome}" Margin="0,0,4,0"/>
             <Button x:Name="BtnClose" Content="&#x2715;" Style="{StaticResource Chrome}"/>
@@ -1414,6 +1420,44 @@ function Append-Log($msg, $col="#282828") {
 (gn "TitleBar").Add_MouseLeftButtonDown({ $Window.DragMove() })
 (gn "BtnMin").Add_Click({ $Window.WindowState = "Minimized" })
 (gn "BtnClose").Add_Click({ $Window.Close() })
+
+# ── Sidebar toggle with smooth animation ──
+$script:SidebarOpen = $true
+$SidebarCol   = (gn "RootGrid").ColumnDefinitions[0]
+$SidebarBorder = gn "SidebarBorder"
+
+function Toggle-Sidebar {
+    # Use DispatcherTimer to animate sidebar width smoothly
+    $script:SidebarAnimStep  = 0
+    $script:SidebarAnimSteps = 18
+    $script:SidebarAnimInterval = 12
+
+    if ($script:SidebarOpen) {
+        $script:SidebarAnimFrom = 210; $script:SidebarAnimTo = 0
+        $script:SidebarOpen = $false
+    } else {
+        $script:SidebarAnimFrom = 0; $script:SidebarAnimTo = 210
+        $script:SidebarOpen = $true
+    }
+
+    $timer = New-Object System.Windows.Threading.DispatcherTimer
+    $timer.Interval = [System.TimeSpan]::FromMilliseconds($script:SidebarAnimInterval)
+    $timer.Add_Tick({
+        $script:SidebarAnimStep++
+        $t = $script:SidebarAnimStep / $script:SidebarAnimSteps
+        # Cubic ease in-out
+        $eased = if ($t -lt 0.5) { 4*$t*$t*$t } else { 1 - [Math]::Pow(-2*$t+2,3)/2 }
+        $w = $script:SidebarAnimFrom + ($script:SidebarAnimTo - $script:SidebarAnimFrom) * $eased
+        $SidebarCol.Width = [System.Windows.GridLength]::new([Math]::Max(0,[Math]::Round($w)))
+        if ($script:SidebarAnimStep -ge $script:SidebarAnimSteps) {
+            $SidebarCol.Width = [System.Windows.GridLength]::new($script:SidebarAnimTo)
+            $timer.Stop()
+        }
+    })
+    $timer.Start()
+}
+
+(gn "BtnToggleSidebar").Add_Click({ Toggle-Sidebar })
 
 # ══════════════════════════════════════════════════════════════
 #  EVENTS — SIDEBAR NAV
